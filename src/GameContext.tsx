@@ -50,10 +50,17 @@ async function loadGameData(): Promise<{ clues: ClueData[]; cities: City[] }> {
     if (!cachedClues || !cachedCities) {
         const [cluesRes, citiesRes] = await Promise.all([
             fetch('/data/clues.json'),
-            fetch('/cities.json'),
+            fetch('/data/cities.json'),
         ]);
         cachedClues = await cluesRes.json();
-        cachedCities = await citiesRes.json();
+        const rawCities = await citiesRes.json();
+        // Convert from data format to City format
+        cachedCities = rawCities.map((c: any) => ({
+            geonameId: String(c.geoname_id),
+            displayName: c.name + ':::' + c.country_iso2,
+            latitude: c.lat,
+            longitude: c.lon
+        }));
     }
     return { clues: cachedClues!, cities: cachedCities! };
 }

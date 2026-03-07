@@ -1,514 +1,179 @@
-import { deepmerge } from '@mui/utils';
 import { createTheme, ThemeOptions, Theme } from '@mui/material/styles';
 
-declare module '@mui/material/styles/createPalette' {
-    interface ColorRange {
-        50: string;
-        100: string;
-        200: string;
-        300: string;
-        400: string;
-        500: string;
-        600: string;
-        700: string;
-        800: string;
-        900: string;
-    }
-
-    interface PaletteColor extends ColorRange {}
-
-    interface Palette {
-        primaryDark: PaletteColor;
-    }
-}
-
-declare module '@mui/material/styles/createTypography' {
-    interface TypographyOptions {
-        fontWeightExtraBold?: number;
-        fontFamilyCode?: string;
-    }
-
-    interface Typography {
-        fontWeightExtraBold: number;
-        fontFamilyCode: string;
-    }
-}
-
-// TODO: enable this once types conflict is fixed
-// declare module '@mui/material/Button' {
-//   interface ButtonPropsVariantOverrides {
-//     code: true;
-//   }
-// }
-
-const defaultTheme = createTheme();
-
-const blue = {
-    50: '#F0F7FF',
-    100: '#C2E0FF',
-    200: '#A5D8FF',
-    300: '#66B2FF',
-    400: '#3399FF',
-    main: '#007FFF', // contrast 3.83:1
-    500: '#007FFF',
-    600: '#0072E5',
-    700: '#0059B2',
-    800: '#004C99',
-    900: '#003A75',
-};
-export const blueDark = {
-    50: '#E2EDF8',
-    100: '#CEE0F3',
-    200: '#91B9E3',
-    300: '#5090D3',
-    main: '#5090D3',
-    400: '#265D97',
-    500: '#1E4976',
-    600: '#173A5E',
-    700: '#132F4C', // contrast 13.64:1
-    800: '#001E3C',
-    900: '#0A1929',
-};
-const grey = {
-    50: '#F3F6F9',
-    100: '#EAEEF3',
-    200: '#E5E8EC',
-    300: '#D7DCE1',
-    400: '#BFC7CF',
-    500: '#AAB4BE',
-    600: '#7F8E9D',
-    700: '#46505A', // contrast 8.21:1
-    800: '#2F3A45', // contrast 11.58:1
-    900: '#20262D',
-};
-
-const systemFont = [
-    '-apple-system',
-    'BlinkMacSystemFont',
-    '"Segoe UI"',
-    'Roboto',
-    '"Helvetica Neue"',
-    'Arial',
-    'sans-serif',
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
-];
-
-export const getMetaThemeColor = (mode: 'light' | 'dark') => {
-    const themeColor = {
-        light: grey[50],
-        dark: blueDark[800],
-    };
-    return themeColor[mode];
-};
-
-export const getDesignTokens = (mode: 'light' | 'dark') =>
-    ({
-        palette: {
-            primary: {
-                ...blue,
-                ...(mode === 'dark' && {
-                    main: blue[400],
-                }),
-            },
-            divider: mode === 'dark' ? blueDark[700] : grey[200],
-            primaryDark: blueDark,
-            mode,
-            ...(mode === 'dark' && {
-                background: {
-                    default: blueDark[800],
-                    paper: blueDark[900],
-                },
-            }),
-            common: {
-                black: '#1D1D1D',
-            },
-            ...(mode === 'light' && {
-                text: {
-                    primary: grey[900],
-                    secondary: grey[700],
-                },
-            }),
-            ...(mode === 'dark' && {
-                text: {
-                    primary: '#fff',
-                    secondary: grey[500],
-                },
-            }),
-            grey,
-            error: {
-                50: '#FFF0F1',
-                100: '#FFDBDE',
-                200: '#FFBDC2',
-                300: '#FF99A2',
-                400: '#FF7A86',
-                500: '#FF505F',
-                main: '#EB0014', // contrast 4.63:1
-                600: '#EB0014',
-                700: '#C70011',
-                800: '#94000D',
-                900: '#570007',
-            },
-            success: {
-                50: '#E9FBF0',
-                100: '#C6F6D9',
-                200: '#9AEFBC',
-                300: '#6AE79C',
-                400: '#3EE07F',
-                500: '#21CC66',
-                600: '#1DB45A',
-                ...(mode === 'dark' && {
-                    main: '#1DB45A', // contrast 6.17:1 (blueDark.800)
-                }),
-                ...(mode === 'light' && {
-                    main: '#1AA251', // contrast 3.31:1
-                }),
-                700: '#1AA251',
-                800: '#178D46',
-                900: '#0F5C2E',
-            },
-            warning: {
-                50: '#FFF9EB',
-                100: '#FFF4DB',
-                200: '#FFEDC2',
-                300: '#FFE4A3',
-                400: '#FFD980',
-                500: '#FCC419',
-                600: '#FAB005',
-                main: '#F1A204', // does not pass constrast ratio
-                700: '#F1A204',
-                800: '#DB9A00',
-                900: '#8F6400',
-            },
+export const getDesignTokens = (_mode: 'light' | 'dark'): ThemeOptions => ({
+    palette: {
+        mode: 'light',
+        primary: {
+            main: '#2d7a70',
+            light: '#52a89e',
+            dark: '#1e5a52',
+            contrastText: '#fff',
         },
-        shape: {
-            borderRadius: 10,
+        background: {
+            default: '#f6f2ec',
+            paper: '#ffffff',
         },
-        spacing: 10,
-        typography: {
-            fontFamily: ['"IBM Plex Sans"', ...systemFont].join(','),
-            fontFamilyCode: [
-                'Consolas',
-                'Menlo',
-                'Monaco',
-                'Andale Mono',
-                'Ubuntu Mono',
-                'monospace',
-            ].join(','),
-            fontFamilyTagline: ['"PlusJakartaSans-ExtraBold"', ...systemFont].join(','),
-            fontFamilySystem: systemFont.join(','),
-            fontWeightExtraBold: 800,
-            h1: {
-                fontFamily: ['"PlusJakartaSans-ExtraBold"', ...systemFont].join(','),
-                fontSize: 'clamp(2.625rem, 1.2857rem + 3.5714vw, 4rem)',
-                fontWeight: 800,
-                lineHeight: 78 / 70,
-                ...(mode === 'light' && {
-                    color: blueDark[900],
-                }),
-            },
-            h2: {
-                fontFamily: ['"PlusJakartaSans-ExtraBold"', ...systemFont].join(','),
-                fontSize: 'clamp(1.5rem, 0.9643rem + 1.4286vw, 2.25rem)',
-                fontWeight: 800,
-                lineHeight: 44 / 36,
-                color: mode === 'dark' ? grey[200] : blueDark[700],
-            },
-            h3: {
-                fontSize: defaultTheme.typography.pxToRem(36),
-                lineHeight: 44 / 36,
-                letterSpacing: 0,
-            },
-            h4: {
-                fontSize: defaultTheme.typography.pxToRem(28),
-                lineHeight: 42 / 28,
-                letterSpacing: 0,
-            },
-            h5: {
-                fontSize: defaultTheme.typography.pxToRem(24),
-                lineHeight: 36 / 24,
-                letterSpacing: 0,
-            },
-            h6: {
-                fontSize: defaultTheme.typography.pxToRem(20),
-                lineHeight: 30 / 20,
-                letterSpacing: 0,
-            },
-            button: {
-                textTransform: 'initial',
-                fontWeight: 700,
-                letterSpacing: 0,
-            },
-            subtitle1: {
-                fontSize: defaultTheme.typography.pxToRem(18),
-                lineHeight: 24 / 18,
-                letterSpacing: 0,
-                fontWeight: 500,
-            },
-            body1: {
-                fontSize: defaultTheme.typography.pxToRem(16), // 16px
-                lineHeight: 24 / 16,
-                letterSpacing: 0,
-            },
-            body2: {
-                fontSize: defaultTheme.typography.pxToRem(14), // 14px
-                lineHeight: 21 / 14,
-                letterSpacing: 0,
-            },
-            caption: {
-                display: 'inline-block',
-                fontSize: defaultTheme.typography.pxToRem(12), // 12px
-                lineHeight: 18 / 12,
-                letterSpacing: 0,
-                fontWeight: 700,
-            },
+        text: {
+            primary: '#1c1814',
+            secondary: '#705d50',
         },
-    } as ThemeOptions);
+        divider: '#e8dfd5',
+        success: {
+            main: '#2e7d52',
+            light: '#4caf76',
+            dark: '#1b5e38',
+        },
+        warning: {
+            main: '#c87c12',
+            light: '#e8a030',
+            dark: '#9a5e0a',
+        },
+        error: {
+            main: '#c0392b',
+            light: '#e05242',
+            dark: '#922b21',
+        },
+    },
+    shape: {
+        borderRadius: 8,
+    },
+    spacing: 8,
+    typography: {
+        fontFamily: 'var(--font-body), system-ui, -apple-system, sans-serif',
+        h1: {
+            fontFamily: 'var(--font-heading), Georgia, serif',
+            fontWeight: 700,
+            lineHeight: 1.15,
+        },
+        h2: {
+            fontFamily: 'var(--font-heading), Georgia, serif',
+            fontWeight: 700,
+            lineHeight: 1.2,
+        },
+        h3: {
+            fontFamily: 'var(--font-heading), Georgia, serif',
+            fontWeight: 700,
+            lineHeight: 1.25,
+        },
+        h4: {
+            fontWeight: 700,
+            lineHeight: 1.3,
+        },
+        h5: {
+            fontWeight: 600,
+            lineHeight: 1.35,
+        },
+        h6: {
+            fontWeight: 600,
+            lineHeight: 1.4,
+        },
+        button: {
+            textTransform: 'none' as const,
+            fontWeight: 600,
+            letterSpacing: '0.01em',
+        },
+        body1: {
+            lineHeight: 1.6,
+        },
+        body2: {
+            lineHeight: 1.55,
+        },
+        caption: {
+            lineHeight: 1.5,
+            display: 'inline-block',
+        },
+    },
+});
 
 export function getThemedComponents(theme: Theme) {
     return {
         components: {
-            MuiButtonBase: {
-                defaultProps: {
-                    disableTouchRipple: true,
+            MuiCssBaseline: {
+                styleOverrides: {
+                    body: {
+                        backgroundColor: theme.palette.background.default,
+                    },
                 },
+            },
+            MuiButtonBase: {
+                defaultProps: { disableTouchRipple: false },
             },
             MuiButton: {
-                defaultProps: {
-                    disableElevation: true,
-                },
+                defaultProps: { disableElevation: true },
                 styleOverrides: {
-                    sizeLarge: {
-                        padding: '1rem 1.25rem',
-                        ...theme.typography.body1,
-                        lineHeight: 21 / 16,
-                        fontWeight: 700,
+                    root: {
+                        borderRadius: 8,
                     },
                     containedPrimary: {
-                        backgroundColor: theme.palette.primary[500],
-                        color: '#fff',
-                    },
-                },
-                variants: [
-                    {
-                        props: { variant: 'code' },
-                        style: {
-                            color:
-                                theme.palette.mode === 'dark' ? theme.palette.grey[400] : theme.palette.grey[800],
-                            border: '1px solid',
-                            borderColor:
-                                theme.palette.mode === 'dark'
-                                    ? theme.palette.primaryDark[400]
-                                    : theme.palette.grey[200],
-                            backgroundColor:
-                                theme.palette.mode === 'dark'
-                                    ? theme.palette.primaryDark[700]
-                                    : theme.palette.grey[50],
-                            ...theme.typography.body2,
-                            fontFamily: theme.typography.fontFamilyCode,
-                            fontWeight: 600,
-                            WebkitFontSmoothing: 'subpixel-antialiased',
-                            '&:hover, &.Mui-focusVisible': {
-                                borderColor: theme.palette.primary.main,
-                                backgroundColor:
-                                    theme.palette.mode === 'dark'
-                                        ? theme.palette.primaryDark[600]
-                                        : theme.palette.primary[50],
-                                '& .MuiButton-endIcon': {
-                                    color:
-                                        theme.palette.mode === 'dark'
-                                            ? theme.palette.primary[300]
-                                            : theme.palette.primary.main,
-                                },
-                            },
-                            '& .MuiButton-startIcon': {
-                                color: theme.palette.grey[400],
-                            },
-                            '& .MuiButton-endIcon': {
-                                color:
-                                    theme.palette.mode === 'dark' ? theme.palette.grey[400] : theme.palette.grey[700],
-                            },
+                        backgroundColor: theme.palette.primary.main,
+                        '&:hover': {
+                            backgroundColor: theme.palette.primary.dark,
                         },
                     },
-                ],
-            },
-            MuiContainer: {
-                styleOverrides: {
-                    root: {
-                        [theme.breakpoints.up('md')]: {
-                            paddingLeft: theme.spacing(2),
-                            paddingRight: theme.spacing(2),
-                        },
+                    sizeLarge: {
+                        padding: '10px 24px',
+                        fontSize: '1rem',
+                        fontWeight: 600,
                     },
-                },
-            },
-            MuiDivider: {
-                styleOverrides: {
-                    root: {
-                        borderColor:
-                            theme.palette.mode === 'dark'
-                                ? theme.palette.primaryDark[700]
-                                : theme.palette.grey[100],
-                    },
-                },
-            },
-            MuiLink: {
-                defaultProps: {
-                    underline: 'none',
-                },
-                styleOverrides: {
-                    root: {
-                        color:
-                            theme.palette.mode === 'dark'
-                                ? theme.palette.primary[400]
-                                : theme.palette.primary[600],
-                        fontWeight: 700,
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        '&.MuiTypography-body1 > svg': {
-                            marginTop: 2,
-                        },
-                        '& svg:last-child': {
-                            marginLeft: 2,
-                        },
-                    },
-                },
-            },
-            MuiListItemButton: {
-                styleOverrides: {
-                    root: {
-                        borderRadius: 5,
-                        '&:hover, &:focus': {
-                            backgroundColor: theme.palette.mode === 'dark' ? '' : theme.palette.grey[100],
-                        },
-                    },
-                },
-            },
-            MuiSelect: {
-
-                styleOverrides: {
-                    iconFilled: {
-                        top: 'calc(50% - .25em)',
-                    },
-                },
-            },
-            MuiTab: {
-                defaultProps: {
-                    disableTouchRipple: true,
                 },
             },
             MuiPaper: {
                 styleOverrides: {
                     root: {
-                        backgroundColor:
-                            theme.palette.mode === 'dark' ? theme.palette.primaryDark[900] : '#fff',
-                        '&[href]': {
-                            textDecorationLine: 'none',
-                        },
+                        backgroundImage: 'none',
                     },
                     outlined: {
-                        display: 'block',
-                        borderColor:
-                            theme.palette.mode === 'dark'
-                                ? theme.palette.primaryDark[400]
-                                : theme.palette.grey[200],
-                        ...(theme.palette.mode === 'dark' && {
-                            backgroundColor: theme.palette.primaryDark[700],
-                        }),
-                        'a&, button&': {
-                            '&:hover': {
-                                boxShadow: '1px 1px 20px 0 rgb(90 105 120 / 20%)',
-                            },
-                        },
-                    },
-                },
-            },
-            MuiTableCell: {
-                styleOverrides: {
-                    root: {
-                        padding: theme.spacing(1, 2),
                         borderColor: theme.palette.divider,
                     },
-                    head: {
-                        color: theme.palette.text.primary,
-                        fontWeight: 700,
+                    elevation1: {
+                        boxShadow: '0 1px 4px 0 rgba(60,40,20,0.07)',
                     },
-                    body: {
-                        color: theme.palette.text.secondary,
+                    elevation2: {
+                        boxShadow: '0 2px 8px 0 rgba(60,40,20,0.09)',
                     },
-                },
-            },
-            MuiToggleButtonGroup: {
-                styleOverrides: {
-                    root: {
-                        backgroundColor:
-                            theme.palette.mode === 'dark' ? theme.palette.primaryDark[900] : '#fff',
+                    elevation3: {
+                        boxShadow: '0 4px 16px 0 rgba(60,40,20,0.10)',
                     },
                 },
             },
-            MuiToggleButton: {
+            MuiDivider: {
+                styleOverrides: {
+                    root: { borderColor: theme.palette.divider },
+                },
+            },
+            MuiLinearProgress: {
+                styleOverrides: {
+                    root: { borderRadius: 0 },
+                },
+            },
+            MuiChip: {
+                styleOverrides: {
+                    root: { fontWeight: 600 },
+                },
+            },
+            MuiTab: {
+                defaultProps: { disableTouchRipple: true },
                 styleOverrides: {
                     root: {
+                        fontWeight: 600,
                         textTransform: 'none',
-                        fontWeight: 700,
-                        color:
-                            theme.palette.mode === 'dark' ? theme.palette.grey[300] : theme.palette.grey[700],
-                        borderColor:
-                            theme.palette.mode === 'dark'
-                                ? theme.palette.primaryDark[500]
-                                : theme.palette.grey[200],
-                        '&.Mui-selected': {
-                            borderColor: `${theme.palette.primary[500]} !important`,
-                            color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.primary[500],
-                            backgroundColor:
-                                theme.palette.mode === 'dark'
-                                    ? theme.palette.primary[800]
-                                    : theme.palette.primary[50],
-                        },
+                        letterSpacing: '0.01em',
                     },
                 },
             },
-            MuiTooltip: {
+            MuiTabs: {
                 styleOverrides: {
-                    tooltip: {
-                        paddingTop: 7,
-                        paddingBottom: 7,
+                    indicator: {
+                        backgroundColor: theme.palette.primary.main,
+                        height: 3,
                     },
                 },
             },
-            MuiSwitch: {
+            MuiSlider: {
                 styleOverrides: {
-                    root: {
-                        width: 32,
-                        height: 20,
-                        padding: 0,
-                        '& .MuiSwitch-switchBase': {
-                            '&.Mui-checked': {
-                                transform: 'translateX(11px)',
-                                color: '#fff',
-                            },
-                        },
-                    },
-                    switchBase: {
-                        height: 20,
-                        width: 20,
-                        padding: 0,
-                        color: '#fff',
-                        '&.Mui-checked + .MuiSwitch-track': {
-                            opacity: 1,
-                        },
-                    },
-                    track: {
-                        opacity: 1,
-                        borderRadius: 32,
-                        backgroundColor:
-                            theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[400],
-                    },
-                    thumb: {
-                        flexShrink: 0,
-                        width: '14px',
-                        height: '14px',
+                    markLabel: {
+                        fontSize: '0.72rem',
+                        color: theme.palette.text.secondary,
                     },
                 },
             },
@@ -516,6 +181,4 @@ export function getThemedComponents(theme: Theme) {
     };
 }
 
-const darkTheme = createTheme(getDesignTokens('dark'));
-export const brandingDarkTheme = deepmerge(darkTheme, getThemedComponents(darkTheme));
-export default defaultTheme;
+export default getDesignTokens;

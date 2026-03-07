@@ -14,12 +14,12 @@ export default function RoundSummary() {
     const correct = submission.guessResult === 'correct';
     const partCorrect = submission.guessResult === 'partCorrect';
 
-    let resultEmoji = '❌';
+    let resultEmoji = String.fromCodePoint(0x274C); // ❌
     let resultLabel = 'Wrong';
     let resultColor = '#ef5350';
-    if (missed)      { resultEmoji = '⏱️'; resultLabel = "Time's up"; resultColor = '#9e9e9e'; }
-    else if (correct)     { resultEmoji = '✅'; resultLabel = 'Correct!';     resultColor = '#66bb6a'; }
-    else if (partCorrect) { resultEmoji = '🟡'; resultLabel = 'Right country'; resultColor = '#ffa726'; }
+    if (missed)      { resultEmoji = String.fromCodePoint(0x23F3); resultLabel = "Time's up"; resultColor = '#9e9e9e'; } // ⏱️
+    else if (correct)     { resultEmoji = String.fromCodePoint(0x2705); resultLabel = 'Correct!';     resultColor = '#66bb6a'; } // ✅
+    else if (partCorrect) { resultEmoji = String.fromCodePoint(0x1F7E1); resultLabel = 'Right country'; resultColor = '#ffa726'; } // 🟡
 
     const totalScore = gameState.players[0]?.score ?? 0;
 
@@ -53,7 +53,7 @@ export default function RoundSummary() {
 
             {!missed && !correct && submission.answer && (
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                    You guessed: {getDisplayString(submission.answer, 'geo', false)}
+                    You guessed: {getDisplayString(submission.answer, 'geo', true)}
                 </Typography>
             )}
 

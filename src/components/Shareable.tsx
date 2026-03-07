@@ -2,12 +2,13 @@ import { GameState, Scoreboard } from '@/src/gameTypes';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import React from 'react';
 import { useGameContext } from '@/src/GameContext';
+import { Twemoji } from '@/src/utils';
 
 function getGuessEmoji(score: number, correct: boolean) {
-    if (correct) return '🟢';
-    if (score > 700) return '🟡';
-    if (score > 0) return '🟠';
-    return '🔴';
+    if (correct) return String.fromCodePoint(0x1F7E2); // 🟢
+    if (score > 700) return String.fromCodePoint(0x1F7E1); // 🟡
+    if (score > 0) return String.fromCodePoint(0x1F7E0); // 🟠
+    return String.fromCodePoint(0x1F534); // 🔴
 }
 
 function getFlagEmoji(countryCode: string) {
@@ -42,13 +43,20 @@ export default function Shareable() {
 
     const shareText = buildShareText(board, gameState);
     const row = board.playerRows[0];
-    const emojis = board.roundTitles
+    const emojiElements = board.roundTitles
+        .slice(0, 10)
         .map((title, i) => {
             const iso2 = title.split(':::')[1];
-            return getFlagEmoji(iso2) + getGuessEmoji(row.roundScores[i], row.roundGuesses[i] === title);
-        })
-        .slice(0, 10)
-        .join(' ');
+            const flagEmoji = getFlagEmoji(iso2);
+            const guessEmoji = getGuessEmoji(row.roundScores[i], row.roundGuesses[i] === title);
+            return (
+                <React.Fragment key={i}>
+                    <Twemoji emoji={flagEmoji} />
+                    <Twemoji emoji={guessEmoji} />
+                    {i < Math.min(board.roundTitles.length, 10) - 1 && ' '}
+                </React.Fragment>
+            );
+        });
 
     const handleCopy = () => {
         navigator.clipboard.writeText(shareText).then(() => {
@@ -79,7 +87,7 @@ export default function Shareable() {
             >
                 <div>#TouringTest</div>
                 <div>Score: {row.totalScore} / {gameState.numRounds * 1000}</div>
-                <div>{emojis}</div>
+                <div>{emojiElements}</div>
             </Box>
             <Box sx={{ display: 'flex', gap: 1 }}>
                 <Button variant="outlined" size="small" onClick={handleCopy}>

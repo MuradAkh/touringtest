@@ -170,7 +170,7 @@ export default function Home() {
                 {/* Hero */}
                 <Box sx={{ textAlign: 'center' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
-                        <img width="72" src="./icon.png" alt="Touring Test" />
+                        <img width="72" src="./icon.svg" alt="Touring Test" />
                         <Typography variant="h2" fontWeight="bold" component="h1" letterSpacing="-1px">
                             Touring Test
                         </Typography>

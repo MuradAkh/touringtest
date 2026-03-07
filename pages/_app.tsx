@@ -11,6 +11,10 @@ import { getDesignTokens, getThemedComponents } from '@/src/theme';
 import { deepmerge } from '@mui/utils';
 import '@/styles/globals.css';
 import * as ga from '../lib/ga';
+import { DM_Sans, Playfair_Display } from 'next/font/google';
+
+const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-body', display: 'swap', weight: ['400', '500', '700'] });
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-heading', weight: ['700'], display: 'swap' });
 
 const designTokens = getDesignTokens('light');
 let newTheme = createTheme(designTokens);
@@ -42,12 +46,14 @@ export default function MyApp(props: MyAppProps) {
                     content="Touring Test is a geography quiz game with high quality content created by generative AI. Guess the city based on paintings, poems, travel blogs, description of food, and more!"
                 />
             </Head>
-            <ThemeProvider theme={newTheme}>
-                <CssBaseline />
-                <GameContextProvider>
-                    <Component {...pageProps} />
-                </GameContextProvider>
-            </ThemeProvider>
+            <div className={`${dmSans.variable} ${playfair.variable}`}>
+                <ThemeProvider theme={newTheme}>
+                    <CssBaseline />
+                    <GameContextProvider>
+                        <Component {...pageProps} />
+                    </GameContextProvider>
+                </ThemeProvider>
+            </div>
         </CacheProvider>
     );
 }

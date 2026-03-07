@@ -12,8 +12,9 @@ const regionNames = new Intl.DisplayNames(
     ['en'], {type: 'region'}
 );
 
-const Twemoji = ({emoji} : any) => (
+export const Twemoji = ({emoji} : any) => (
     <span
+        className="twemoji-emoji"
         dangerouslySetInnerHTML={{
             __html: twemoji.parse(emoji, {
                 folder: 'svg',

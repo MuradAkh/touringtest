@@ -7,11 +7,11 @@ import Shareable from '@/src/components/Shareable';
 
 function getRoundResult(score: number, guess: string, correctTitle: string, mapMode: boolean) {
     const missed = guess === '';
-    if (missed) return { label: 'Missed', color: '#ef5350' as const, emoji: '❌' };
-    if (guess === correctTitle) return { label: 'Correct', color: '#66bb6a' as const, emoji: '✅' };
-    if (mapMode && score > 700) return { label: 'Close', color: '#ffa726' as const, emoji: '🟡' };
-    if (mapMode && score > 0) return { label: 'Far', color: '#ef5350' as const, emoji: '🟠' };
-    return { label: 'Wrong', color: '#ef5350' as const, emoji: '❌' };
+    if (missed) return { label: 'Missed', color: '#ef5350' as const, emoji: String.fromCodePoint(0x274C) }; // ❌
+    if (guess === correctTitle) return { label: 'Correct', color: '#66bb6a' as const, emoji: String.fromCodePoint(0x2705) }; // ✅
+    if (mapMode && score > 700) return { label: 'Close', color: '#ffa726' as const, emoji: String.fromCodePoint(0x1F7E1) }; // 🟡
+    if (mapMode && score > 0) return { label: 'Far', color: '#ef5350' as const, emoji: String.fromCodePoint(0x1F7E0) }; // 🟠
+    return { label: 'Wrong', color: '#ef5350' as const, emoji: String.fromCodePoint(0x274C) }; // ❌
 }
 
 export default function Scoreboard() {
@@ -72,7 +72,7 @@ export default function Scoreboard() {
                                     </Typography>
                                     {wrongGuess && (
                                         <Typography variant="caption" color="text.secondary" noWrap>
-                                            You guessed: {getDisplayString(guess, 'geo', false)}
+                                            You guessed: {getDisplayString(guess, 'geo', true)}
                                         </Typography>
                                     )}
                                 </Box>

@@ -19,9 +19,16 @@ const Map = ({selectedMarker, setSelectedMarker, correctAnswer, guessedCorrectly
 
     useEffect(() => {
         async function fetchCities() {
-            const response = await fetch("/cities.json");
+            const response = await fetch("/data/cities.json");
             const data = await response.json();
-            setMarkers(data);
+            // Convert from data format to City format
+            const converted: City[] = data.map((c: any) => ({
+                geonameId: String(c.geoname_id),
+                displayName: c.name + ':::' + c.country_iso2,
+                latitude: c.lat,
+                longitude: c.lon
+            }));
+            setMarkers(converted);
         }
 
         fetchCities();
