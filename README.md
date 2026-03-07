@@ -48,6 +48,40 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to play.
 
+## Deployment
+
+This project is configured to deploy to Cloudflare Pages using Wrangler.
+
+### Prerequisites
+
+1. Install Wrangler (included as a dev dependency):
+   ```bash
+   npm install
+   ```
+
+2. Authenticate with Cloudflare:
+   ```bash
+   npx wrangler login
+   ```
+
+### Deploy
+
+To deploy to Cloudflare Pages:
+
+```bash
+npm run deploy
+```
+
+To deploy a preview branch:
+
+```bash
+npm run deploy:preview
+```
+
+The deployment will:
+1. Build the Next.js static export
+2. Deploy the `out` directory to Cloudflare Pages
+
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/) - React framework

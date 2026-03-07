@@ -9,7 +9,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "npm run build && wrangler pages deploy out",
+    "deploy:preview": "npm run build && wrangler pages deploy out --branch=preview"
   },
   "dependencies": {
     "@emotion/cache": "^11.10.7",
@@ -36,6 +38,7 @@
     "typescript": "5.0.3"
   },
   "devDependencies": {
-    "@types/react-twemoji": "^0.4.0"
+    "@types/react-twemoji": "^0.4.0",
+    "wrangler": "^3.0.0"
   }
 }
