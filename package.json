@@ -10,8 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "npm run build && wrangler pages deploy out",
-    "deploy:preview": "npm run build && wrangler pages deploy out --branch=preview"
+    "deploy": "npm run build && wrangler pages deploy out --project-name=touringtest",
+    "deploy:preview": "npm run build && wrangler pages deploy out --project-name=touringtest --branch=preview"
   },
   "dependencies": {
     "@emotion/cache": "^11.10.7",

@@ -82,6 +82,21 @@ The deployment will:
 1. Build the Next.js static export
 2. Deploy the `out` directory to Cloudflare Pages
 
+### CI/CD Setup (Cloudflare Dashboard)
+
+For automatic deployments via Git integration, configure in Cloudflare Pages dashboard:
+
+**Build Settings:**
+- **Build command:** `npm run build`
+- **Build output directory:** `out`
+- **Root directory:** `/` (leave empty)
+- **Node version:** `18.17.0` or higher
+
+**Environment Variables:**
+- None required for static deployment
+
+The project will automatically deploy on every push to your connected repository.
+
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/) - React framework
