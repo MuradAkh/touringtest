@@ -28,16 +28,15 @@ export default function RoundSummary() {
             elevation={0}
             variant="outlined"
             sx={{
-                borderRadius: 2,
+                borderRadius: { xs: 0, md: 2 },
                 flexGrow: 1,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
                 textAlign: 'center',
-                p: 4,
+                p: { xs: 3, md: 4 },
                 gap: 1,
-                minHeight: '60vh',
             }}
         >
             <Typography fontSize="3rem" lineHeight={1}>{resultEmoji}</Typography>

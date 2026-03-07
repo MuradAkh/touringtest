@@ -33,17 +33,13 @@ export default function Scoreboard() {
     return (
         <Container maxWidth="sm" sx={{ py: 4 }}>
             {/* Summary */}
-            <Paper elevation={3} sx={{ p: 3, mb: 3, textAlign: 'center', borderRadius: 3, position: 'relative' }}>
-                <Button
-                    variant="outlined"
-                    onClick={handlePlayAgain}
-                    sx={{ position: 'absolute', top: 12, right: 12 }}
-                >
-                    Play Again
-                </Button>
-                <Typography variant="h4" gutterBottom fontWeight="bold">
+            <Paper elevation={3} sx={{ p: 3, mb: 3, textAlign: 'center', borderRadius: 3 }}>
+                <Typography variant="h4" fontWeight="bold">
                     Game Over
                 </Typography>
+                <Button variant="contained" onClick={handlePlayAgain} sx={{ mt: 1.5, mb: 2 }}>
+                    Play Again
+                </Button>
                 <Typography variant="h2" fontWeight="bold" color="primary">
                     {row.totalScore}
                     <Typography component="span" variant="h5" color="text.secondary">
@@ -97,6 +93,7 @@ export default function Scoreboard() {
             <Box sx={{ mt: 3 }}>
                 <Shareable />
             </Box>
+
         </Container>
     );
 }

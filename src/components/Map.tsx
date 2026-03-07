@@ -36,7 +36,7 @@ const Map = ({selectedMarker, setSelectedMarker, correctAnswer, guessedCorrectly
             center={[51.505, -0.09]}
             zoom={4}
             minZoom={2}
-            style={{height: '100%', width: '100%', minHeight: '60vh'}}
+            style={{height: '100%', width: '100%', minHeight: '200px'}}
 
         >
             <VectorTileLayer

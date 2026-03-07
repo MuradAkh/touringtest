@@ -41,12 +41,12 @@ export default function MapAnswerTab() {
     return (
         <Paper
             sx={{
-                borderRadius: 0,
+                borderRadius: { xs: 0, md: 2 },
                 flexGrow: 1,
                 display: 'flex',
                 flexDirection: 'column',
-                minHeight: '60vh',
-                minWidth: '30vw',
+                minHeight: 0,
+                overflow: 'hidden',
             }}
         >
             <Map
@@ -56,16 +56,14 @@ export default function MapAnswerTab() {
                 correctAnswer={correctAnswer ? correctAnswer : null}
             />
             <Button
-                sx={{ mt: 1, mr: 1, margin: '1vh' }}
-                type="submit"
-                variant="outlined"
+                sx={{ m: 1.5 }}
+                variant="contained"
                 onClick={handleSubmit}
                 disabled={cannotAnswer || selectedMarker === null || waitingForNextRound}
             >
-                {'Guess: '}&nbsp;
                 {selectedMarker
-                    ? getDisplayString(selectedMarker.displayName, gameState?.gameType as string, true)
-                    : ''}
+                    ? <>Guess: &nbsp;{getDisplayString(selectedMarker.displayName, gameState?.gameType as string, true)}</>
+                    : 'Select a city on the map'}
             </Button>
         </Paper>
     );
