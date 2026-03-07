@@ -65,6 +65,14 @@ async function loadGameData(): Promise<{ clues: ClueData[]; cities: City[] }> {
     return { clues: cachedClues!, cities: cachedCities! };
 }
 
+// Export function to get cached cities (for Map component)
+export async function getCachedCities(): Promise<City[]> {
+    if (!cachedCities) {
+        await loadGameData();
+    }
+    return cachedCities!;
+}
+
 // --- Round helpers ---
 
 function toClue(c: ClueData): Clue {
