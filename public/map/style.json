@@ -7,7 +7,7 @@
         17.65431710431244,
         32.954120326746775
     ],
-    "glyphs": "https://touringtest.net/map/font/{fontstack}/{range}.pbf",
+    "glyphs": "https://touringtest.murad.dev/map/font/{fontstack}/{range}.pbf",
     "layers": [
         {
             "id": "background",
@@ -469,7 +469,7 @@
     "bearing": 0,
     "sources": {
         "maplibre": {
-            "url": "https://touringtest.net/map/tiles/tiles.json",
+            "url": "https://touringtest.murad.dev/map/tiles/tiles.json",
             "type": "vector"
         },
         "crimea": {

@@ -67,6 +67,6 @@
         1
     ],
     "tiles": [
-        "https://touringtest.net/map/tiles/{z}/{x}/{y}.pbf"
+        "https://touringtest.murad.dev/map/tiles/{z}/{x}/{y}.pbf"
     ]
 }
