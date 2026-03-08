@@ -62,8 +62,8 @@ export default function Scoreboard() {
                     return (
                         <React.Fragment key={i}>
                             {i > 0 && <Divider />}
-                            <Box sx={{ display: 'flex', alignItems: 'center', px: 2.5, py: 1.5, gap: 1.5 }}>
-                                <Typography variant="body2" color="text.secondary" sx={{ minWidth: 24 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'flex-start', px: 2.5, py: 1.5, gap: 1.5 }}>
+                                <Typography variant="body2" color="text.secondary" sx={{ minWidth: 24, pt: 0.5 }}>
                                     {i + 1}
                                 </Typography>
                                 <Box sx={{ flexGrow: 1, minWidth: 0 }}>
@@ -71,19 +71,21 @@ export default function Scoreboard() {
                                         {getDisplayString(title, 'geo', true)}
                                     </Typography>
                                     {wrongGuess && (
-                                        <Typography variant="caption" color="text.secondary" noWrap>
+                                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.25 }}>
                                             You guessed: {getDisplayString(guess, 'geo', true)}
                                         </Typography>
                                     )}
                                 </Box>
-                                <Chip
-                                    label={result.emoji + ' ' + result.label}
-                                    size="small"
-                                    sx={{ bgcolor: result.color + '22', color: result.color, fontWeight: 'bold', border: `1px solid ${result.color}44` }}
-                                />
-                                <Typography variant="body1" fontWeight="bold" sx={{ minWidth: 48, textAlign: 'right' }}>
-                                    +{score}
-                                </Typography>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 0.5, flexShrink: 0 }}>
+                                    <Chip
+                                        label={result.emoji + ' ' + result.label}
+                                        size="small"
+                                        sx={{ bgcolor: result.color + '22', color: result.color, fontWeight: 'bold', border: `1px solid ${result.color}44` }}
+                                    />
+                                    <Typography variant="body1" fontWeight="bold" sx={{ minWidth: 48, textAlign: 'right' }}>
+                                        +{score}
+                                    </Typography>
+                                </Box>
                             </Box>
                         </React.Fragment>
                     );

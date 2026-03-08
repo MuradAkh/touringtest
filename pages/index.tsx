@@ -213,7 +213,7 @@ export default function Home() {
                         <Link href="https://forms.gle/YVkdQ7p16r48XJcP8" color="inherit" underline="hover">Send feedback</Link>
                     </Typography>
                     <Typography variant="caption" color="text.disabled" display="block">
-                        Project by <Link href="https://mur.ad" color="inherit" underline="hover">mu.rad</Link>
+                        Project by <Link href="https://mur.ad" color="inherit" underline="hover">mur.ad</Link>
                     </Typography>
                 </Box>
 
