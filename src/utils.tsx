@@ -28,6 +28,7 @@ export function getDisplayString(option: string, gameType: string, fancy: boolea
     const gameClass = gameType.split('_')[0];
     if (gameClass === 'geo') {
         const [city, iso2] = option.split(':::');
+        if (!iso2) return fancy ? <span>{city}</span> : city;
         const flagEmoji = String.fromCodePoint(...[...iso2 as any].map(char => char.charCodeAt(0) + 127397))
         const country = regionNames.of(iso2);
         if (!fancy) {

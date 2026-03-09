@@ -1,6 +1,7 @@
-import { Box, Container, Link, Paper, Typography } from '@mui/material';
+import { Box, Button, Container, Link, Paper, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import MatchPicker from '@/src/components/MatchPicker';
+import NextLink from 'next/link';
 
 type TextItem = { kind: 'text'; label: string; accent: string; italic: boolean; lines: string[] };
 type ImageItem = { kind: 'image'; label: string; accent: string; src: string };
@@ -198,8 +199,18 @@ export default function Home() {
                 </Box>
 
                 {/* Settings */}
-                <Box sx={{ maxWidth: 500, mx: 'auto', width: '100%' }}>
+                <Box sx={{ maxWidth: 500, mx: 'auto', width: '100%', display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                     <MatchPicker />
+                    <Button
+                        component={NextLink}
+                        href="/multiplayer"
+                        variant="outlined"
+                        size="large"
+                        fullWidth
+                        sx={{ borderRadius: 2, py: 1.2, fontWeight: 600 }}
+                    >
+                        Multiplayer — play with friends
+                    </Button>
                 </Box>
 
                 {/* Footer */}
