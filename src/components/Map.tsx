@@ -2,7 +2,7 @@ import { MapContainer, Marker, useMapEvents, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState, useMemo, useCallback, memo } from 'react'
 import { City } from "@/src/gameTypes";
-import { divIcon, DivIcon, Icon, icon, LatLngBounds } from "leaflet";
+import { divIcon, DivIcon, LatLngBounds } from "leaflet";
 import VectorTileLayer from 'react-leaflet-vector-tile-layer';
 import { getCachedCities } from "@/src/GameContext";
 
@@ -13,99 +13,91 @@ type MapProps = {
     guessedCorrectly: boolean
 }
 
-// Memoized icon creation - icons are created once and reused
-const defaultIcon = icon({
-    iconUrl: 'default-marker-icon.png',
-    iconSize: [15, 15],
-});
+type MarkerState = 'default' | 'selected' | 'correct' | 'incorrect';
 
-const selectedIcon = icon({
-    iconUrl: 'selected-marker-icon.png',
-    iconSize: [20, 20],
-});
+const MARKER_COLORS: Record<MarkerState, string> = {
+    default:   '#a89880',
+    selected:  '#2d7a70',
+    correct:   '#4caf50',
+    incorrect: '#c0392b',
+};
 
-const correctIcon = icon({
-    iconUrl: 'correct-marker-icon.png',
-    iconSize: [20, 20],
-});
+const MARKER_SIZES: Record<MarkerState, number> = {
+    default:   10,
+    selected:  14,
+    correct:   14,
+    incorrect: 14,
+};
 
-const incorrectIcon = icon({
-    iconUrl: 'incorrect-marker-icon.png',
-    iconSize: [20, 20],
-});
+function makeMarkerIcon(state: MarkerState, cityName: string, showLabel: boolean): DivIcon {
+    const color = MARKER_COLORS[state];
+    const size = MARKER_SIZES[state];
+    const dot = `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:2px solid rgba(255,255,255,0.9);box-shadow:0 1px 4px rgba(0,0,0,0.3);flex-shrink:0;"></div>`;
+    const html = showLabel
+        ? `<div style="display:flex;align-items:center;gap:4px;white-space:nowrap;">${dot}<span style="font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;color:#1c1814;text-shadow:0 0 3px #f6f2ec,0 0 3px #f6f2ec,0 0 3px #f6f2ec;">${cityName}</span></div>`
+        : dot;
+    return divIcon({
+        className: '',
+        html,
+        iconAnchor: [size / 2, size / 2],
+    });
+}
 
 // Component to track map bounds and zoom for viewport filtering
-function MapViewportTracker({ onBoundsChange, onZoomChange }: { 
+function MapViewportTracker({ onBoundsChange, onZoomChange }: {
     onBoundsChange: (bounds: LatLngBounds) => void;
     onZoomChange: (zoom: number) => void;
 }) {
     const map = useMap();
-    
+
     useMapEvents({
-        moveend: () => {
-            onBoundsChange(map.getBounds());
-        },
+        moveend: () => { onBoundsChange(map.getBounds()); },
         zoomend: () => {
-            const zoom = map.getZoom();
-            onZoomChange(zoom);
+            onZoomChange(map.getZoom());
             onBoundsChange(map.getBounds());
         },
     });
 
     useEffect(() => {
-        // Initial bounds and zoom
-        const bounds = map.getBounds();
-        const zoom = map.getZoom();
-        onBoundsChange(bounds);
-        onZoomChange(zoom);
+        onBoundsChange(map.getBounds());
+        onZoomChange(map.getZoom());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return null;
 }
 
-// Helper function to check if a point is within bounds
 function isInBounds(lat: number, lng: number, bounds: LatLngBounds | null): boolean {
     if (!bounds) return true;
     return bounds.contains([lat, lng]);
 }
 
-// Memoized marker component
 const MarkerComponent = memo(function MarkerComponent({
     marker,
     selectedMarker,
     correctAnswer,
     guessedCorrectly,
     handleMarkerClick,
-    zoomLevel
+    zoomLevel,
 }: {
     marker: City,
     guessedCorrectly: boolean,
     correctAnswer: string | null,
     selectedMarker: City | null,
-    handleMarkerClick: (marker: City | null) => void,
-    zoomLevel: number
+    handleMarkerClick: (marker: City) => void,
+    zoomLevel: number,
 }) {
-    const getIconInner = useCallback((marker: City | null, fallbackIcon: Icon = defaultIcon) => {
-        const size = fallbackIcon.options.iconSize as [number, number];
-        return zoomLevel < 5 ? fallbackIcon : new DivIcon({
-            className: 'my-div-icon',
-            html:
-                `<img style="width: ${size[0]}px" 
-                        src=${fallbackIcon.options.iconUrl}>` +
-                `<strong>${marker?.displayName.split(':::')[0]}</strong>`,
-        });
-    }, [zoomLevel]);
-
     const markerIcon = useMemo(() => {
+        const showLabel = zoomLevel >= 5;
+        const cityName = marker.displayName.split(':::')[0];
         if (correctAnswer !== null && marker.displayName === correctAnswer) {
-            return getIconInner(marker, guessedCorrectly ? correctIcon : incorrectIcon);
-        } else if (selectedMarker !== null && marker.displayName === selectedMarker.displayName) {
-            return getIconInner(marker, selectedIcon);
-        } else {
-            return getIconInner(marker);
+            return makeMarkerIcon(guessedCorrectly ? 'correct' : 'incorrect', cityName, showLabel);
         }
-    }, [marker, selectedMarker, correctAnswer, guessedCorrectly, getIconInner]);
+        if (selectedMarker !== null && marker.displayName === selectedMarker.displayName) {
+            return makeMarkerIcon('selected', cityName, showLabel);
+        }
+        return makeMarkerIcon('default', cityName, showLabel);
+    }, [marker, selectedMarker, correctAnswer, guessedCorrectly, zoomLevel]);
 
     const handleClick = useCallback(() => {
         handleMarkerClick(marker);
@@ -115,9 +107,7 @@ const MarkerComponent = memo(function MarkerComponent({
         <Marker
             position={[marker.latitude, marker.longitude]}
             icon={markerIcon}
-            eventHandlers={{
-                click: handleClick,
-            }}
+            eventHandlers={{ click: handleClick }}
         />
     );
 });
@@ -127,7 +117,6 @@ const Map = ({ selectedMarker, setSelectedMarker, correctAnswer, guessedCorrectl
     const [mapBounds, setMapBounds] = useState<LatLngBounds | null>(null);
     const [zoomLevel, setZoomLevel] = useState(4);
 
-    // Load cities from cache
     useEffect(() => {
         async function loadCities() {
             const cities = await getCachedCities();
@@ -136,35 +125,20 @@ const Map = ({ selectedMarker, setSelectedMarker, correctAnswer, guessedCorrectl
         loadCities();
     }, []);
 
-    const handleBoundsChange = useCallback((bounds: LatLngBounds) => {
-        setMapBounds(bounds);
-    }, []);
+    const handleBoundsChange = useCallback((bounds: LatLngBounds) => setMapBounds(bounds), []);
+    const handleZoomChange = useCallback((zoom: number) => setZoomLevel(zoom), []);
+    const handleMarkerClick = useCallback((marker: City) => setSelectedMarker(marker), [setSelectedMarker]);
 
-    const handleZoomChange = useCallback((zoom: number) => {
-        setZoomLevel(zoom);
-    }, []);
-
-    const handleMarkerClick = useCallback((marker: City | null) => {
-        setSelectedMarker(marker);
-    }, [setSelectedMarker]);
-
-    // Memoize filtered markers based on correctAnswer and selectedMarker
     const filteredMarkers = useMemo(() => {
         if (correctAnswer === null || correctAnswer === '') {
-            // When showing all markers, filter by viewport bounds for performance
             if (mapBounds && markers.length > 100) {
-                // Only filter by bounds if we have many markers to improve performance
-                return markers.filter(marker => 
-                    isInBounds(marker.latitude, marker.longitude, mapBounds)
-                );
+                return markers.filter(m => isInBounds(m.latitude, m.longitude, mapBounds));
             }
             return markers;
-        } else {
-            // When answer is revealed, only show relevant markers
-            return markers.filter(marker => 
-                marker.displayName === correctAnswer || marker.displayName === selectedMarker?.displayName
-            );
         }
+        return markers.filter(m =>
+            m.displayName === correctAnswer || m.displayName === selectedMarker?.displayName
+        );
     }, [markers, correctAnswer, selectedMarker, mapBounds]);
 
     return (
@@ -178,7 +152,7 @@ const Map = ({ selectedMarker, setSelectedMarker, correctAnswer, guessedCorrectl
                 attribution='<a href="https://github.com/maplibre/demotiles">MapLibre</a>'
                 styleUrl="map/style.json"
             />
-            <MapViewportTracker 
+            <MapViewportTracker
                 onBoundsChange={handleBoundsChange}
                 onZoomChange={handleZoomChange}
             />
@@ -197,4 +171,4 @@ const Map = ({ selectedMarker, setSelectedMarker, correctAnswer, guessedCorrectl
     );
 };
 
-export default Map
+export default Map;

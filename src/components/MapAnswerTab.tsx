@@ -40,6 +40,7 @@ export default function MapAnswerTab() {
 
     return (
         <Paper
+            variant="outlined"
             sx={{
                 borderRadius: { xs: 0, md: 2 },
                 flexGrow: 1,

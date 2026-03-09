@@ -13,7 +13,7 @@
             "id": "background",
             "type": "background",
             "paint": {
-                "background-color": "#D8F2FF"
+                "background-color": "#b8d4dc"
             },
             "filter": [
                 "all"
@@ -28,7 +28,7 @@
             "type": "line",
             "paint": {
                 "line-blur": 0.5,
-                "line-color": "#198EC8",
+                "line-color": "#7aaab8",
                 "line-width": {
                     "stops": [
                         [
@@ -102,7 +102,7 @@
                         "UKR",
                         "WSM"
                     ],
-                    "#D6C7FF",
+                    "#e8e0d0",
                     [
                         "AZE",
                         "BGD",
@@ -134,7 +134,7 @@
                         "UZB",
                         "ZMB"
                     ],
-                    "#EBCA8A",
+                    "#ddd4c0",
                     [
                         "AGO",
                         "ASM",
@@ -169,7 +169,7 @@
                         "VIR",
                         "VUT"
                     ],
-                    "#C1E599",
+                    "#c8dbd5",
                     [
                         "ARE",
                         "ARG",
@@ -199,7 +199,7 @@
                         "TZA",
                         "VAT"
                     ],
-                    "#E7E58F",
+                    "#d8d0be",
                     [
                         "AUT",
                         "BEL",
@@ -229,7 +229,7 @@
                         "VEN",
                         "VGB"
                     ],
-                    "#98DDA1",
+                    "#cee0d8",
                     [
                         "AIA",
                         "BIH",
@@ -268,7 +268,7 @@
                         "YEM",
                         "ZWE"
                     ],
-                    "#83D5F4",
+                    "#c5d5e0",
                     [
                         "ABW",
                         "ALB",
@@ -305,13 +305,13 @@
                         "VCT",
                         "ZAF"
                     ],
-                    "#B1BBF9",
+                    "#d0cec8",
                     [
                         "ATA",
                         "GRL"
                     ],
-                    "#FFFFFF",
-                    "#EAB38F"
+                    "#e8e4dc",
+                    "#d4ccbc"
                 ]
             },
             "filter": [
@@ -328,7 +328,7 @@
             "id": "countries-boundary",
             "type": "line",
             "paint": {
-                "line-color": "rgba(255, 255, 255, 1)",
+                "line-color": "rgba(180, 168, 152, 0.8)",
                 "line-width": {
                     "stops": [
                         [
@@ -375,7 +375,7 @@
             "id": "countries-label",
             "type": "symbol",
             "paint": {
-                "text-color": "rgba(8, 37, 77, 1)",
+                "text-color": "rgba(28, 24, 20, 0.75)",
                 "text-halo-blur": {
                     "stops": [
                         [
@@ -388,7 +388,7 @@
                         ]
                     ]
                 },
-                "text-halo-color": "rgba(255, 255, 255, 1)",
+                "text-halo-color": "rgba(246, 242, 236, 0.9)",
                 "text-halo-width": {
                     "stops": [
                         [
@@ -462,7 +462,7 @@
             "type": "fill",
             "source": "crimea",
             "paint": {
-                "fill-color": "#D6C7FF"
+                "fill-color": "#e8e0d0"
             }
         }
     ],
