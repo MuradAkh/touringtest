@@ -72,7 +72,7 @@ export function useMultiplayerContext() {
     return useContext(MultiplayerContext)!;
 }
 
-const PARTYKIT_HOST = process.env.NEXT_PUBLIC_PARTYKIT_HOST ?? '127.0.0.1:1999';
+const PARTYKIT_HOST = process.env.NEXT_PUBLIC_PARTYKIT_HOST ?? 'touringtest.muradakh.partykit.dev';
 
 export function MultiplayerContextProvider({ children }: { children: React.ReactNode }) {
     const [mpState, setMpState] = useState<MultiplayerState | null>(null);
