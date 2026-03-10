@@ -1,8 +1,5 @@
 {
   "name": "touringtest",
   "main": "party/index.ts",
-  "compatibilityDate": "2023-12-22",
-  "vars": {
-    "DATA_BASE_URL": "https://touringtest.pages.dev"
-  }
+  "compatibilityDate": "2023-12-22"
 }

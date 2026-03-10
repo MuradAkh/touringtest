@@ -1,4 +1,6 @@
 import type * as Party from 'partykit/server';
+import rawCities from '../public/data/cities.json';
+import rawClues from '../public/data/clues.json';
 
 const CLUE_BUCKET_URL = 'https://guessgameclues.murad.dev/';
 
@@ -91,15 +93,8 @@ function pickClues(cityClues: ClueData[]): Clue[] {
     return result;
 }
 
-async function buildRounds(dataBaseUrl: string, numRounds: number): Promise<RoundRecord[]> {
-    const [cluesRes, citiesRes] = await Promise.all([
-        fetch(`${dataBaseUrl}/data/clues.json`),
-        fetch(`${dataBaseUrl}/data/cities.json`),
-    ]);
-    const rawClues: ClueData[] = await cluesRes.json();
-    const rawCities: Record<string, unknown>[] = await citiesRes.json();
-
-    const cities: City[] = rawCities.map(c => ({
+function buildRounds(numRounds: number): RoundRecord[] {
+    const cities: City[] = (rawCities as Record<string, unknown>[]).map(c => ({
         geonameId: String(c.geoname_id),
         displayName: c.name + ':::' + c.country_iso2,
         latitude: c.lat as number,
@@ -107,7 +102,7 @@ async function buildRounds(dataBaseUrl: string, numRounds: number): Promise<Roun
     }));
 
     const cluesByCity: Record<string, ClueData[]> = {};
-    for (const clue of rawClues) {
+    for (const clue of rawClues as ClueData[]) {
         if (!cluesByCity[clue.answer_id]) cluesByCity[clue.answer_id] = [];
         cluesByCity[clue.answer_id].push(clue);
     }
@@ -205,8 +200,7 @@ export default class GameRoom implements Party.Server {
 
     private async startGame(roundTime: number, numRounds: number) {
         if (!this.state) return;
-        const dataBaseUrl = (this.room.env.DATA_BASE_URL as string | undefined) ?? 'http://localhost:3000';
-        const rounds = await buildRounds(dataBaseUrl, numRounds);
+        const rounds = buildRounds(numRounds);
 
         // Reset scores for new game
         for (const id of Object.keys(this.state.players)) {
